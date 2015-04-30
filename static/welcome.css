@@ -1,0 +1,12 @@
+div {
+	width: 400px;
+	margin: auto;
+	border: 1px silver solid;
+	padding: 10px;
+	height: 400px;
+}
+
+form {
+	width: 400px;
+	margin: 20px auto;
+}

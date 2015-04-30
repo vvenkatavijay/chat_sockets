@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Welcome</title>
+	<link rel="stylesheet" type="text/css" href="/welcome.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+    	$(document).ready(function(){
+    		var user_name = prompt("Please enter your name to chat", "Guest");
+    		var socket = io.connect();
+
+    		socket.emit("user_add", user_name);
+    		socket.on("new_user", function(data){
+    			console.log("New user " + data + " joined");
+    		});
+
+    		$('#chat_input').submit(function(){
+    			var message = $('#chat').val();
+    			socket.emit("chat_send", message);
+    			$('#chat').val('');
+    			return false;
+    		});
+
+    		socket.on("chat_refresh", function(data){
+    			var html_str = "";
+
+    			for (var i = 0; i < data.length; i++) {
+    				html_str += data[i][0] + ": " + data[i][1] + "<br>";
+    			};
+
+    			$("#chat_window").html(html_str);
+    		});
+
+    	});
+    </script>
+</head>
+<body>
+	<div id="chat_window">
+
+	</div>
+	<form action="#" method="post" id="chat_input">
+		<input type="text" name="chat" placeholder="Enter your message here" id="chat">
+		<input type="submit" value="Send">
+	</form>
+</body>
+</html>
